@@ -16,7 +16,7 @@ led_pins = [
     board.IO33, # type: ignore
     board.IO34, # type: ignore
     board.IO48,
-    board.IO35, # re-solder
+    board.IO35,
     board.IO36,
     board.IO37,
     board.IO38,
@@ -28,18 +28,21 @@ leds = [DigitalInOut(pin) for pin in led_pins]
 for led in leds:
     led.direction = Direction.OUTPUT
 
-# main loopk
+# main loop
 while True:
     volume = microphone.value
     print(volume)
 
-    thresholds = [38000, 36000, 34000, 32000, 30000, 28000, 26000, 24000, 22000, 20000, 18000]
+    thresholds = [38000, 37000, 36000, 35000, 34000, 33000, 32000, 31000, 30000, 29000, 28000]
 
     for i in range(10, -1, -1):
         if volume > thresholds[10 - i]:
             leds[i].value = 1
+            
         else:
+            if leds[i].value == 1:
+                sleep(0.06)
+                
             leds[i].value = 0
-            sleep(0.07)
+        
 
-    sleep(0.03)
